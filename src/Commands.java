@@ -7,6 +7,15 @@ public class Commands {
     {
         if(addons != null)
         {
+            for(int i = 0; i < addons.length() - 1; i++)
+            {
+                if(!Character.isDigit(addons.charAt(i)) && !Character.isLetter(addons.charAt(i)))
+                {
+                    System.out.println("Wrong name");
+                    return;
+                }
+            }
+
             Catalog catalog = new Catalog(current_folder, addons, null);
             current_folder.addChild(catalog);
         }
@@ -20,6 +29,15 @@ public class Commands {
     {
         if(addons != null)
         {
+            for(int i = 0; i < addons.length() - 1; i++)
+            {
+                if(!Character.isDigit(addons.charAt(i)) && !Character.isLetter(addons.charAt(i)))
+                {
+                    System.out.println("Wrong name");
+                    return;
+                }
+            }
+
             File file = new File(current_folder, addons, "");
             current_folder.addChild(file);
         }
@@ -34,6 +52,7 @@ public class Commands {
         if(addons == null)
         {
             System.out.println("File or Catalog expected");
+            return;
         }
         else
         {
@@ -228,6 +247,12 @@ public class Commands {
 
     public static void cp(String addons, String addons2, Catalog current_folder)
     {
+        if(addons == null || addons2 == null)
+        {
+            System.out.println("File or Catalog expected");
+            return;
+        }
+
         int file1 = 0;
         int file2 = 0;
         Node node1 = null;
@@ -286,12 +311,6 @@ public class Commands {
                     current_folder = current_folder.getParent();
                 }
                 addons2 = addons2.substring(1);
-                if(addons2.equals(""))
-                {
-                    System.out.println("Don't copy root wrr");
-                    current_folder = curr_folder;
-                    return;
-                }
             }
             String[] splitAddons = addons2.split("\\\\");
             lastSplitAddons2 = splitAddons[splitAddons.length - 1];
@@ -377,7 +396,7 @@ public class Commands {
 
         if(file1 == 2 && file2 == 0)
         {
-            System.out.println("second argument doesn't exist");
+            cpCatalog(lastSplitAddons2, lastSplitAddons1, node1folder, current_folder);
             return;
         }
 
@@ -425,6 +444,13 @@ public class Commands {
 
     public static void mv(String addons, String addons2, Catalog current_folder)
     {
+        if(addons == null || addons2 == null)
+        {
+            System.out.println("File or Catalog expected");
+            return;
+        }
+        if(addons.equals(addons2))
+            return;
         cp(addons, addons2, current_folder);
         rm(addons, current_folder);
     }
